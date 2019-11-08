@@ -1,0 +1,35 @@
+	.text
+main:	la $t0,size
+	move $t1,$0	# Row counter
+
+row:	beq $t1,20,done	
+	li $t2,0	#column counter
+	addi $t0,$t0,80
+	div $t8,$t1,2
+	bnez $t8,orow
+
+erow:	li $t5,1
+eloop:	sw $t5,0($t0)
+	addi $t2,$t2,1
+	beq $t2,20,nrow
+	addi $t0,$t0,4
+	addi $t5,$t5,1
+	j eloop
+	
+nrow:	addi $t1,$t1,1
+	la $t0,size
+	j row
+	
+orow:	li $t5,20
+oloop:	sw $t5,0($t0)
+	addi $t2,$t2,1
+	beq $t2,20,nrow
+	addi $t0,$t0,4
+	sub $t5,$t5,1
+	j oloop
+
+done:	li $v0,10
+	syscall
+
+	.data
+size:	.space 1600
